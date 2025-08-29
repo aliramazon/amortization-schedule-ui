@@ -1,98 +1,25 @@
-import {
-    Button,
-    Card,
-    Field,
-    Fieldset,
-    HStack,
-    Icon,
-    Input,
-    Text,
-} from "@chakra-ui/react";
-import { useState } from "react";
-import { FaChartLine } from "react-icons/fa";
-import { validators } from "../../../utils/validators";
-import type { FormValues } from "../types";
-
-type FormErrors = Partial<Record<keyof FormValues, string>>;
+import { Button, Card, Field, Fieldset, HStack, Input } from "@chakra-ui/react";
+import { usePageForm } from "../hooks/use-page-form";
+import { PageFormBanner } from "./page-form-banner";
 
 export const PageForm = () => {
-    const [values, setValues] = useState<FormValues>({
-        loanAmount: "",
-        amortizationMonths: "",
-        termMonths: "",
-        marginAbovePrime: "",
-    });
-
-    const [errors, setErrors] = useState<FormErrors>({});
-
-    const primeRate = 5.5;
-    const effectiveRate =
-        primeRate + (parseFloat(values.marginAbovePrime) || 0);
-
-    const handleChange =
-        (field: keyof FormValues) =>
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            const value = e.target.value;
-            console.log(`handleChange → ${field}: "${value}"`);
-
-            const updatedForm = { ...values, [field]: value };
-            setValues(updatedForm);
-
-            const { error } = validators[field](value, updatedForm);
-            setErrors((prev) => ({ ...prev, [field]: error }));
-        };
-
-    const handleCalculate = () => {
-        const newErrors: FormErrors = {};
-        (Object.keys(values) as (keyof FormValues)[]).forEach((field) => {
-            const { error } = validators[field](values[field], values);
-            if (error) newErrors[field] = error;
-        });
-
-        setErrors(newErrors);
-
-        if (Object.keys(newErrors).length === 0) {
-            console.log("Calculating with:", {
-                loanAmount: parseFloat(values.loanAmount),
-                amortizationMonths: parseInt(values.amortizationMonths),
-                termMonths: parseInt(values.termMonths),
-                marginAbovePrime: parseFloat(values.marginAbovePrime),
-            });
-        }
-    };
+    const {
+        values,
+        errors,
+        primeRateData,
+        primeRateLoading,
+        handleChange,
+        calculate,
+    } = usePageForm();
 
     return (
         <Card.Root shadow="sm" mt={6}>
             <Card.Body p={6}>
-                <Card.Root bg="gray.100" shadow="none" mb={6}>
-                    <Card.Body p={6}>
-                        <HStack justify="space-between" align="center">
-                            <HStack gap={3}>
-                                <Icon color="blue.500">
-                                    <FaChartLine />
-                                </Icon>
-                                <Text
-                                    fontSize="lg"
-                                    fontWeight="semibold"
-                                    color="gray.700"
-                                >
-                                    Current Prime Rate
-                                </Text>
-                            </HStack>
-                            <Text
-                                fontSize="2xl"
-                                fontWeight="bold"
-                                color="blue.600"
-                            >
-                                {primeRate.toFixed(2)}%
-                            </Text>
-                        </HStack>
-                        <Text fontSize="sm" color="gray.600" mt={2}>
-                            Effective Rate: {effectiveRate.toFixed(2)}% (Prime +{" "}
-                            {values.marginAbovePrime || "0"}% margin)
-                        </Text>
-                    </Card.Body>
-                </Card.Root>
+                <PageFormBanner
+                    marginAbovePrime={values.marginAbovePrime}
+                    primeInterestRate={primeRateData?.primeRate}
+                    primeRateLoading={primeRateLoading}
+                />
 
                 <Fieldset.Root size="lg">
                     <Fieldset.Content>
@@ -110,7 +37,7 @@ export const PageForm = () => {
                                     value={values.loanAmount}
                                     onChange={handleChange("loanAmount")}
                                     placeholder="Enter loan amount"
-                                    size="lg"
+                                    size="2xl"
                                 />
                                 {errors.loanAmount && (
                                     <Field.ErrorText>
@@ -137,7 +64,7 @@ export const PageForm = () => {
                                         "amortizationMonths"
                                     )}
                                     placeholder="Enter amortization months"
-                                    size="lg"
+                                    size="2xl"
                                 />
                                 {errors.amortizationMonths && (
                                     <Field.ErrorText>
@@ -161,7 +88,7 @@ export const PageForm = () => {
                                     value={values.termMonths}
                                     onChange={handleChange("termMonths")}
                                     placeholder="Enter term in months"
-                                    size="lg"
+                                    size="2xl"
                                 />
                                 {errors.termMonths && (
                                     <Field.ErrorText>
@@ -187,7 +114,7 @@ export const PageForm = () => {
                                     value={values.marginAbovePrime}
                                     onChange={handleChange("marginAbovePrime")}
                                     placeholder="Enter margin percentage"
-                                    size="lg"
+                                    size="2xl"
                                 />
                                 {errors.marginAbovePrime && (
                                     <Field.ErrorText>
@@ -200,12 +127,13 @@ export const PageForm = () => {
 
                     <HStack justify="flex-end" mt={6}>
                         <Button
-                            onClick={handleCalculate}
-                            size="lg"
+                            onClick={calculate}
+                            size="2xl"
                             colorPalette="blue"
                             fontWeight="semibold"
                             py={6}
                             fontSize="lg"
+                            disabled={primeRateLoading}
                         >
                             Calculate Amortization Schedule
                         </Button>

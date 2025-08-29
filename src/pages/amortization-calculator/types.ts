@@ -7,8 +7,8 @@ export type FormValues = {
 
 export interface PrimeRateData {
     primeRate: number;
-    effectiveDate: string;
-    lastUpdated: string;
+    effectiveDate?: string;
+    lastUpdated?: string;
 }
 
 export interface PrimeRateResponse {

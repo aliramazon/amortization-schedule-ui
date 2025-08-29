@@ -4,14 +4,12 @@ import type {
 } from "../pages/amortization-calculator/types";
 import { config } from "./config";
 
-export async function getPrimeInterestRate(): Promise<PrimeRateData> {
+export const getPrimeInterestRate = async (): Promise<PrimeRateData> => {
     try {
         const res = await fetch(
-            `${config.apiBaseUrl}/rates/prime-interest-rate`,
-            {
-                method: "GET",
-            }
+            `${config.apiBaseUrl}/rates/prime-interest-rate`
         );
+        console.log(res);
 
         if (!res.ok) {
             const errorBody = await res.json().catch(() => null);
@@ -36,4 +34,4 @@ export async function getPrimeInterestRate(): Promise<PrimeRateData> {
             "An unexpected error occurred while fetching prime interest rate"
         );
     }
-}
+};
