@@ -1,3 +1,5 @@
+import { AmortizationCalculator } from "./pages/amortization-calculator/amortization-calculator";
+
 export const App = () => {
-    return <h1>Hello</h1>;
+    return <AmortizationCalculator />;
 };
