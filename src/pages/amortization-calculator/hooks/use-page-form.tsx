@@ -6,7 +6,11 @@ import type { FormValues, PrimeRateData } from "../types";
 
 type FormErrors = Partial<Record<keyof FormValues, string>>;
 
-export const usePageForm = () => {
+type UsePageFormProps = {
+    onSubmit: (values: FormValues & { primeRate: number }) => void;
+};
+
+export const usePageForm = ({ onSubmit }: UsePageFormProps) => {
     const [values, setValues] = useState<FormValues>({
         loanAmount: "",
         amortizationMonths: "",
@@ -69,6 +73,16 @@ export const usePageForm = () => {
         };
     };
 
+    const handleSubmit = () => {
+        const result = validate();
+        if (!result.submittable || !primeRateData || !result.formData) return;
+
+        onSubmit({
+            ...result.formData,
+            primeRate: primeRateData.primeRate,
+        });
+    };
+
     return {
         values,
         errors,
@@ -77,5 +91,6 @@ export const usePageForm = () => {
         handleChange,
         handleBlur,
         validate,
+        handleSubmit,
     };
 };

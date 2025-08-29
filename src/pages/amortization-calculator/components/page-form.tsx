@@ -17,18 +17,8 @@ export const PageForm = ({
         primeRateLoading,
         handleChange,
         handleBlur,
-        validate,
-    } = usePageForm();
-
-    const handleSubmit = () => {
-        const result = validate();
-        if (!result.submittable || !primeRateData || !result.formData) return;
-
-        onSubmit({
-            ...result.formData,
-            primeRate: primeRateData?.primeRate,
-        });
-    };
+        handleSubmit,
+    } = usePageForm({ onSubmit });
 
     return (
         <Card.Root shadow="sm" mt={6}>
