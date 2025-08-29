@@ -1,43 +1,11 @@
 import { Box } from "@chakra-ui/react";
-import { useState } from "react";
-
-import { toaster } from "../../design-system/toaster";
-import { getAmortizationSchedule } from "../../services/get-amortization-schedule";
-import { AmortizationSchedule } from "./components/amortization-schedule"; // 👈 import it
+import { AmortizationSchedule } from "./components/amortization-schedule";
 import { PageForm } from "./components/page-form";
 import { PageHeader } from "./components/page-header";
-import type { AmortizationScheduleData, FormValues } from "./types";
+import { useAmortizationSchedule } from "./hooks/use-amortization-schedule";
 
 export const AmortizationCalculator = () => {
-    const [data, setData] = useState<AmortizationScheduleData | null>(null);
-    const [loading, setLoading] = useState(false);
-
-    const submitForm = async (values: FormValues & { primeRate: number }) => {
-        setLoading(true);
-        try {
-            const data = await getAmortizationSchedule(
-                values,
-                values.primeRate
-            );
-            setData(data);
-        } catch (error) {
-            const message =
-                error instanceof Error
-                    ? error.message
-                    : "Failed to fetch amortization schedule";
-
-            toaster.create({
-                title: "Error",
-                description: message,
-                type: "error",
-                duration: 4000,
-            });
-
-            setData(null);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const { data, loading, submitForm } = useAmortizationSchedule();
 
     return (
         <Box
