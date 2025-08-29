@@ -16,7 +16,7 @@ export const PageFormBanner = ({
         (primeInterestRate || 0) + (Number(marginAbovePrime) || 0);
 
     return (
-        <Card.Root bg="gray.100" shadow="none" mb={6}>
+        <Card.Root bg="blue.50" shadow="none" mb={6} border="none">
             <Card.Body p={6}>
                 <HStack justify="space-between" align="center">
                     <HStack gap={3}>

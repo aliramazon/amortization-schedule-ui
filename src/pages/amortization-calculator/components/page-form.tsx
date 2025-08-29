@@ -1,4 +1,12 @@
-import { Button, Card, Field, Fieldset, HStack, Input } from "@chakra-ui/react";
+import {
+    Button,
+    Card,
+    Field,
+    Fieldset,
+    HStack,
+    Input,
+    Stack,
+} from "@chakra-ui/react";
 import { usePageForm } from "../hooks/use-page-form";
 import type { FormValues } from "../types";
 import { PageFormBanner } from "./page-form-banner";
@@ -31,8 +39,16 @@ export const PageForm = ({
 
                 <Fieldset.Root size="lg">
                     <Fieldset.Content>
-                        <HStack gap={6} align="flex-start">
-                            <Field.Root invalid={!!errors.loanAmount} flex="1">
+                        <Stack
+                            gap={6}
+                            align="flex-start"
+                            direction={{ base: "column", sm: "row" }}
+                        >
+                            <Field.Root
+                                invalid={!!errors.loanAmount}
+                                flex="1"
+                                w="100%"
+                            >
                                 <Field.Label
                                     color="gray.700"
                                     fontWeight="semibold"
@@ -58,6 +74,7 @@ export const PageForm = ({
                             <Field.Root
                                 invalid={!!errors.amortizationMonths}
                                 flex="1"
+                                w="100%"
                             >
                                 <Field.Label
                                     color="gray.700"
@@ -82,10 +99,19 @@ export const PageForm = ({
                                     </Field.ErrorText>
                                 )}
                             </Field.Root>
-                        </HStack>
+                        </Stack>
 
-                        <HStack gap={6} align="flex-start">
-                            <Field.Root invalid={!!errors.termMonths} flex="1">
+                        <Stack
+                            gap={6}
+                            align="flex-start"
+                            mt={6}
+                            direction={{ base: "column", sm: "row" }}
+                        >
+                            <Field.Root
+                                invalid={!!errors.termMonths}
+                                flex="1"
+                                w="100%"
+                            >
                                 <Field.Label
                                     color="gray.700"
                                     fontWeight="semibold"
@@ -111,6 +137,7 @@ export const PageForm = ({
                             <Field.Root
                                 invalid={!!errors.marginAbovePrime}
                                 flex="1"
+                                w="100%"
                             >
                                 <Field.Label
                                     color="gray.700"
@@ -134,7 +161,7 @@ export const PageForm = ({
                                     </Field.ErrorText>
                                 )}
                             </Field.Root>
-                        </HStack>
+                        </Stack>
                     </Fieldset.Content>
 
                     <HStack justify="flex-end" mt={6}>
@@ -147,7 +174,7 @@ export const PageForm = ({
                             fontSize="lg"
                             disabled={primeRateLoading || loading}
                         >
-                            Calculate Amortization Schedule
+                            Calculate Schedule
                         </Button>
                     </HStack>
                 </Fieldset.Root>

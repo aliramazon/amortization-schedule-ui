@@ -4,6 +4,7 @@ import {
     Heading,
     HStack,
     Icon,
+    Stack,
     Stat,
     Table,
 } from "@chakra-ui/react";
@@ -22,47 +23,78 @@ export const AmortizationSchedule = ({
             </Card.Header>
 
             <Card.Body>
-                <HStack gap={6} w="full">
-                    <Stat.Root flex="1" borderWidth="1px" p="4" rounded="md">
+                <Stack
+                    gap={6}
+                    w="full"
+                    direction={{ base: "column", md: "row" }}
+                >
+                    <Stat.Root
+                        flex="1"
+                        borderWidth="1px"
+                        p="4"
+                        rounded="md"
+                        bg="blue.50"
+                        borderColor="blue.200"
+                    >
                         <HStack justify="space-between">
-                            <Stat.Label>Total Interest</Stat.Label>
-                            <Icon color="fg.muted">
+                            <Stat.Label color="blue.600">
+                                Total Interest
+                            </Stat.Label>
+                            <Icon color="blue.500">
                                 <LuDollarSign />
                             </Icon>
                         </HStack>
-                        <Stat.ValueText>
+                        <Stat.ValueText color="blue.700">
                             ${data.totalInterest.toLocaleString()}
                         </Stat.ValueText>
                     </Stat.Root>
 
-                    <Stat.Root flex="1" borderWidth="1px" p="4" rounded="md">
+                    <Stat.Root
+                        flex="1"
+                        borderWidth="1px"
+                        p="4"
+                        rounded="md"
+                        bg="green.50"
+                        borderColor="green.200"
+                    >
                         <HStack justify="space-between">
-                            <Stat.Label>Total Principal</Stat.Label>
-                            <Icon color="fg.muted">
+                            <Stat.Label color="green.600">
+                                Total Principal
+                            </Stat.Label>
+                            <Icon color="green.500">
                                 <LuDollarSign />
                             </Icon>
                         </HStack>
-                        <Stat.ValueText>
+                        <Stat.ValueText color="green.700">
                             ${data.totalPrincipal.toLocaleString()}
                         </Stat.ValueText>
                     </Stat.Root>
 
-                    <Stat.Root flex="1" borderWidth="1px" p="4" rounded="md">
+                    <Stat.Root
+                        flex="1"
+                        borderWidth="1px"
+                        p="4"
+                        rounded="md"
+                        bg="purple.50"
+                        borderColor="purple.200"
+                    >
                         <HStack justify="space-between">
-                            <Stat.Label>Total Payments</Stat.Label>
-                            <Icon color="fg.muted">
+                            <Stat.Label color="purple.600">
+                                Total Payments
+                            </Stat.Label>
+                            <Icon color="purple.500">
                                 <LuDollarSign />
                             </Icon>
                         </HStack>
-                        <Stat.ValueText>
+                        <Stat.ValueText color="purple.700">
                             ${data.totalPayments.toLocaleString()}
                         </Stat.ValueText>
                     </Stat.Root>
-                </HStack>
+                </Stack>
             </Card.Body>
 
             <Card.Body>
-                <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
+                <Box borderWidth="1px" borderRadius="lg" overflowX="auto">
                     <Table.Root size="lg" striped>
                         <Table.Header bg="gray.100">
                             <Table.Row>
