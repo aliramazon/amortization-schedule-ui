@@ -41,12 +41,13 @@ export const usePageForm = () => {
         (field: keyof FormValues) =>
         (e: React.ChangeEvent<HTMLInputElement>) => {
             const value = e.target.value;
-            const updatedForm = { ...values, [field]: value };
-            setValues(updatedForm);
-
-            const { error } = validators[field](value, updatedForm);
-            setErrors((prev) => ({ ...prev, [field]: error }));
+            setValues((prev) => ({ ...prev, [field]: value }));
         };
+
+    const handleBlur = (field: keyof FormValues) => () => {
+        const { error } = validators[field](values[field], values);
+        setErrors((prev) => ({ ...prev, [field]: error }));
+    };
 
     const validate = (): { submittable: boolean; formData?: FormValues } => {
         const newErrors: FormErrors = {};
@@ -64,12 +65,7 @@ export const usePageForm = () => {
 
         return {
             submittable: true,
-            formData: {
-                loanAmount: values.loanAmount,
-                amortizationMonths: values.amortizationMonths,
-                termMonths: values.termMonths,
-                marginAbovePrime: values.marginAbovePrime,
-            },
+            formData: { ...values },
         };
     };
 
@@ -79,6 +75,7 @@ export const usePageForm = () => {
         primeRateData,
         primeRateLoading,
         handleChange,
+        handleBlur,
         validate,
     };
 };

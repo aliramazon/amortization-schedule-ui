@@ -16,6 +16,7 @@ export const PageForm = ({
         primeRateData,
         primeRateLoading,
         handleChange,
+        handleBlur,
         validate,
     } = usePageForm();
 
@@ -53,6 +54,7 @@ export const PageForm = ({
                                     type="number"
                                     value={values.loanAmount}
                                     onChange={handleChange("loanAmount")}
+                                    onBlur={handleBlur("loanAmount")}
                                     placeholder="Enter loan amount"
                                     size="2xl"
                                 />
@@ -80,6 +82,7 @@ export const PageForm = ({
                                     onChange={handleChange(
                                         "amortizationMonths"
                                     )}
+                                    onBlur={handleBlur("amortizationMonths")}
                                     placeholder="Enter amortization months"
                                     size="2xl"
                                 />
@@ -92,7 +95,6 @@ export const PageForm = ({
                         </HStack>
 
                         <HStack gap={6} align="flex-start">
-                            {/* Term Months */}
                             <Field.Root invalid={!!errors.termMonths} flex="1">
                                 <Field.Label
                                     color="gray.700"
@@ -105,6 +107,7 @@ export const PageForm = ({
                                     type="number"
                                     value={values.termMonths}
                                     onChange={handleChange("termMonths")}
+                                    onBlur={handleBlur("termMonths")}
                                     placeholder="Enter term in months"
                                     size="2xl"
                                 />
@@ -131,6 +134,7 @@ export const PageForm = ({
                                     step="0.1"
                                     value={values.marginAbovePrime}
                                     onChange={handleChange("marginAbovePrime")}
+                                    onBlur={handleBlur("marginAbovePrime")}
                                     placeholder="Enter margin percentage"
                                     size="2xl"
                                 />
