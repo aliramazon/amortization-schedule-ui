@@ -16,6 +16,17 @@ export const AmortizationSchedule = ({
 }: {
     data: AmortizationScheduleData;
 }) => {
+    const stats = [
+        {
+            data: data.totalInterest,
+            title: "Total Interest",
+        },
+        {
+            data: data.totalPrincipal,
+            title: "Total Principal",
+        },
+        { data: data.totalPayments, title: "Total Payments" },
+    ];
     return (
         <Card.Root shadow="sm" mt={8}>
             <Card.Header>
@@ -28,68 +39,30 @@ export const AmortizationSchedule = ({
                     w="full"
                     direction={{ base: "column", md: "row" }}
                 >
-                    <Stat.Root
-                        flex="1"
-                        borderWidth="1px"
-                        p="4"
-                        rounded="md"
-                        bg="blue.50"
-                        borderColor="blue.200"
-                    >
-                        <HStack justify="space-between">
-                            <Stat.Label color="blue.600">
-                                Total Interest
-                            </Stat.Label>
-                            <Icon color="blue.500">
-                                <LuDollarSign />
-                            </Icon>
-                        </HStack>
-                        <Stat.ValueText color="blue.700">
-                            ${data.totalInterest.toLocaleString()}
-                        </Stat.ValueText>
-                    </Stat.Root>
-
-                    <Stat.Root
-                        flex="1"
-                        borderWidth="1px"
-                        p="4"
-                        rounded="md"
-                        bg="green.50"
-                        borderColor="green.200"
-                    >
-                        <HStack justify="space-between">
-                            <Stat.Label color="green.600">
-                                Total Principal
-                            </Stat.Label>
-                            <Icon color="green.500">
-                                <LuDollarSign />
-                            </Icon>
-                        </HStack>
-                        <Stat.ValueText color="green.700">
-                            ${data.totalPrincipal.toLocaleString()}
-                        </Stat.ValueText>
-                    </Stat.Root>
-
-                    <Stat.Root
-                        flex="1"
-                        borderWidth="1px"
-                        p="4"
-                        rounded="md"
-                        bg="purple.50"
-                        borderColor="purple.200"
-                    >
-                        <HStack justify="space-between">
-                            <Stat.Label color="purple.600">
-                                Total Payments
-                            </Stat.Label>
-                            <Icon color="purple.500">
-                                <LuDollarSign />
-                            </Icon>
-                        </HStack>
-                        <Stat.ValueText color="purple.700">
-                            ${data.totalPayments.toLocaleString()}
-                        </Stat.ValueText>
-                    </Stat.Root>
+                    {stats.map((stat) => {
+                        return (
+                            <Stat.Root
+                                flex="1"
+                                p="4"
+                                rounded="md"
+                                bg="blue.50"
+                                border="none"
+                                key={stat.title}
+                            >
+                                <HStack justify="space-between">
+                                    <Stat.Label color="gray.600">
+                                        {stat.title}
+                                    </Stat.Label>
+                                    <Icon color="gray.500">
+                                        <LuDollarSign />
+                                    </Icon>
+                                </HStack>
+                                <Stat.ValueText color="gray.700">
+                                    ${stat.data.toLocaleString()}
+                                </Stat.ValueText>
+                            </Stat.Root>
+                        );
+                    })}
                 </Stack>
             </Card.Body>
 
