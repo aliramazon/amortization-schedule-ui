@@ -9,7 +9,6 @@ export const getPrimeInterestRate = async (): Promise<PrimeRateData> => {
         const res = await fetch(
             `${config.apiBaseUrl}/rates/prime-interest-rate`
         );
-        console.log(res);
 
         if (!res.ok) {
             const errorBody = await res.json().catch(() => null);

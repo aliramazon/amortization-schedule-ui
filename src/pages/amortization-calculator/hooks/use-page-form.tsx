@@ -24,8 +24,7 @@ export const usePageForm = () => {
         setPrimeRateLoading(true);
         getPrimeInterestRate()
             .then((data) => setPrimeRateData(data))
-            .catch((error) => {
-                console.error("Failed to fetch prime rate:", error);
+            .catch(() => {
                 toaster.create({
                     title: "Failed to Load Prime Rate",
                     description:
@@ -49,8 +48,9 @@ export const usePageForm = () => {
             setErrors((prev) => ({ ...prev, [field]: error }));
         };
 
-    const calculate = () => {
+    const validate = (): { submittable: boolean; formData?: FormValues } => {
         const newErrors: FormErrors = {};
+
         (Object.keys(values) as (keyof FormValues)[]).forEach((field) => {
             const { error } = validators[field](values[field], values);
             if (error) newErrors[field] = error;
@@ -58,15 +58,19 @@ export const usePageForm = () => {
 
         setErrors(newErrors);
 
-        if (Object.keys(newErrors).length === 0) {
-            console.log("Calculating with:", {
-                loanAmount: parseFloat(values.loanAmount),
-                amortizationMonths: parseInt(values.amortizationMonths),
-                termMonths: parseInt(values.termMonths),
-                marginAbovePrime: parseFloat(values.marginAbovePrime),
-                primeRate: primeRateData?.primeRate || 5.5,
-            });
+        if (Object.keys(newErrors).length > 0) {
+            return { submittable: false };
         }
+
+        return {
+            submittable: true,
+            formData: {
+                loanAmount: values.loanAmount,
+                amortizationMonths: values.amortizationMonths,
+                termMonths: values.termMonths,
+                marginAbovePrime: values.marginAbovePrime,
+            },
+        };
     };
 
     return {
@@ -75,6 +79,6 @@ export const usePageForm = () => {
         primeRateData,
         primeRateLoading,
         handleChange,
-        calculate,
+        validate,
     };
 };

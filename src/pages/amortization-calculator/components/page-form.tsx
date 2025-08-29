@@ -1,16 +1,33 @@
 import { Button, Card, Field, Fieldset, HStack, Input } from "@chakra-ui/react";
 import { usePageForm } from "../hooks/use-page-form";
+import type { FormValues } from "../types";
 import { PageFormBanner } from "./page-form-banner";
 
-export const PageForm = () => {
+export const PageForm = ({
+    onSubmit,
+    loading,
+}: {
+    onSubmit: (values: FormValues & { primeRate: number }) => void;
+    loading: boolean;
+}) => {
     const {
         values,
         errors,
         primeRateData,
         primeRateLoading,
         handleChange,
-        calculate,
+        validate,
     } = usePageForm();
+
+    const handleSubmit = () => {
+        const result = validate();
+        if (!result.submittable || !primeRateData || !result.formData) return;
+
+        onSubmit({
+            ...result.formData,
+            primeRate: primeRateData?.primeRate,
+        });
+    };
 
     return (
         <Card.Root shadow="sm" mt={6}>
@@ -75,6 +92,7 @@ export const PageForm = () => {
                         </HStack>
 
                         <HStack gap={6} align="flex-start">
+                            {/* Term Months */}
                             <Field.Root invalid={!!errors.termMonths} flex="1">
                                 <Field.Label
                                     color="gray.700"
@@ -127,13 +145,13 @@ export const PageForm = () => {
 
                     <HStack justify="flex-end" mt={6}>
                         <Button
-                            onClick={calculate}
+                            onClick={handleSubmit}
                             size="2xl"
                             colorPalette="blue"
                             fontWeight="semibold"
                             py={6}
                             fontSize="lg"
-                            disabled={primeRateLoading}
+                            disabled={primeRateLoading || loading}
                         >
                             Calculate Amortization Schedule
                         </Button>
