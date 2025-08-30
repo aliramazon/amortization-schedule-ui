@@ -68,9 +68,9 @@ export const AmortizationSchedule = ({
 
             <Card.Body>
                 <Box borderWidth="1px" borderRadius="lg" overflowX="auto">
-                    <Table.Root size="lg" striped>
-                        <Table.Header bg="gray.100">
-                            <Table.Row>
+                    <Table.Root size="lg">
+                        <Table.Header>
+                            <Table.Row bg="gray.100">
                                 <Table.ColumnHeader>Month</Table.ColumnHeader>
                                 <Table.ColumnHeader>Date</Table.ColumnHeader>
                                 <Table.ColumnHeader textAlign="right">
@@ -90,7 +90,10 @@ export const AmortizationSchedule = ({
 
                         <Table.Body>
                             {data.schedule.map((row) => (
-                                <Table.Row key={row.month}>
+                                <Table.Row
+                                    key={row.month}
+                                    _even={{ bg: "gray.50" }}
+                                >
                                     <Table.Cell>{row.month}</Table.Cell>
                                     <Table.Cell>{row.date}</Table.Cell>
                                     <Table.Cell textAlign="right">
